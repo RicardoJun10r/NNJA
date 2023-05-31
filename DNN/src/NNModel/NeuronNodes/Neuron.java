@@ -2,14 +2,14 @@ package NNModel.NeuronNodes;
 
 public class Neuron {
     
-    private Double values;
+    private Double value;
     
     private Double bias;
     
     public Neuron(){}
     
-    public Neuron(Double values){
-        this.values = values;
+    public Neuron(Double value){
+        this.value = value;
     }
     
     public Double getBias() {
@@ -20,12 +20,12 @@ public class Neuron {
         this.bias = bias;
     }
 
-    public Double getValues() {
-        return values;
+    public Double getvalue() {
+        return value;
     }
 
-    public void setValues(Double values) {
-        this.values = values;
+    public void setvalue(Double value) {
+        this.value = value;
     }
     
 }
