@@ -1,4 +1,4 @@
-package DNN.NNModel.ActivationFunction;
+package NNModel.ActivationFunction;
 
 public enum MathFunction {
     SIGMOIDE, RELU, LINEAR

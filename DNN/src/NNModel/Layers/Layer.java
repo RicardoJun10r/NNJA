@@ -1,6 +1,6 @@
-package DNN.NNModel.Layers;
+package NNModel.Layers;
 
-import DNN.NNModel.NeuronNodes.Neuron;
+import NNModel.NeuronNodes.Neuron;
 
 public class Layer {
     

@@ -1,5 +1,5 @@
-import DNN.NNModel.NN;
-import DNN.NNModel.Type.NNType;
+import NNModel.NN;
+import NNModel.Type.NNType;
 
 public class Demo {
     public static void main(String[] args) {

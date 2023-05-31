@@ -1,7 +1,7 @@
-package DNN.NNModel;
+package NNModel;
 
-import DNN.NNModel.Layers.Layer;
-import DNN.NNModel.Type.NNType;
+import NNModel.Layers.Layer;
+import NNModel.Type.NNType;
 
 public class NN {
     

@@ -1,4 +1,4 @@
-package DNN.NNModel.NeuronNodes;
+package NNModel.NeuronNodes;
 
 public class Neuron {
     
