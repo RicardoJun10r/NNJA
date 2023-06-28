@@ -1,6 +1,13 @@
 package NNModel;
 
+import NNModel.Exceptions.ArchNotSuported;
+import NNModel.Interfaces.InterHiddenOutputLayer;
+import NNModel.Interfaces.InterLayer;
+import NNModel.Layers.HiddenLayer;
+import NNModel.Layers.InputLayer;
 import NNModel.Layers.Layer;
+import NNModel.Layers.OutputLayer;
+import NNModel.Layers.LayersType.LayerType;
 import NNModel.Type.NNType;
 
 public class NN {
@@ -11,15 +18,18 @@ public class NN {
     
     private Integer NUM_SAIDA;
 
-    private Layer inputs;
-    
-    private Layer hidden;
+    private Layer input;
 
+    private Layer hidden;
+    
     private Layer output;
+
+    private Integer[] arquitetura;
 
     private NNType nnType;
 
     public NN(NNType flag, Integer[] arquitetura) {
+        this.arquitetura = arquitetura;
         this.nnType = flag;
         assertNumOfNeurons(arquitetura);
     }
@@ -62,46 +72,51 @@ public class NN {
         }
     }
 
-    public void buildModel(){
-        
-        this.inputs = new Layer(this.NUM_ENTRADA);
-        this.output = new Layer(this.NUM_SAIDA);
+    public <T> void printVet(T[]vet){
+        for(int index = 0; index < vet.length; index++){
+            System.out.print("\t\t\t" + vet[index] + " ");
+            System.out.println();
+        }
+    }
+
+    private void buildModel(){
 
         if(this.nnType == NNType.NO_DENSE){
-            this.inputs.setNext_layer(this.output);
-            this.output.setPrev_layer(this.inputs);
+
+            this.input = new Layer(LayerType.INPUT, this.arquitetura);
+            this.output = new Layer(LayerType.OUTPUT, this.arquitetura);
+
         }
         else{
-            this.hidden = new Layer(this.NUM_OCULTA[0][0]);
-            this.inputs.setNext_layer(this.hidden);
-            this.hidden.setPrev_layer(this.inputs);
-            buildHiddenLayers(this.hidden, this.NUM_OCULTA);
+
+            this.input = new Layer(LayerType.INPUT, this.arquitetura);
+            this.hidden = new Layer(LayerType.HIDDEN, this.arquitetura);
+            this.output = new Layer(LayerType.OUTPUT, this.arquitetura);
+
         }
 
     }
 
-    private void buildHiddenLayers(Layer root, Integer[][] hiddens){
-        Layer aux = root;
-
-        int cont = 1;
-        while(cont < hiddens.length){
-            Layer novo = new Layer(hiddens[cont][0]);
-            aux.setNext_layer(novo);
-            novo.setPrev_layer(aux);
-            aux = novo;
-            cont++;
+    public void allocLayers(){
+        if(verify()){
+            throw new ArchNotSuported("Arquitetura não suportada!!!");
+        } else {
+            this.buildModel();
         }
+    }
+
+    private Boolean verify(){
         
-        aux.setNext_layer(this.output);
-    }
+        if(arquitetura.length < 1) return false;
 
-    public void printLayers(){
-        Layer index = this.inputs;
-        while(index != null){
-            System.out.println("Num of neurons: " + index.getNUM_NEURONS());
-            index = index.getNext_layer();
-        }
-        System.out.println();
+        else if(arquitetura.length == 1 && arquitetura[0] == 0) return false;
+
+        else if(arquitetura.length <= 2 && this.nnType == NNType.DENSE) return false;
+
+        else if(arquitetura.length > 2 && this.nnType == NNType.NO_DENSE) return false;
+
+        else return true;
+
     }
     
 }

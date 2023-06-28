@@ -1,63 +1,66 @@
 package NNModel.Layers;
 
+import java.util.Vector;
+
+import NNModel.Exceptions.ArchNotSuported;
+import NNModel.Layers.LayersType.LayerType;
 import NNModel.NeuronNodes.Neuron;
 
 public class Layer {
     
-    private Neuron[] neurons;
+    private Double[][] neurons;
+
+    private Double[][] sums;
     
-    private Double[] weights;
+    private Double[][] weights;
 
-    private Integer NUM_NEURONS;
+    private Vector<Double[][]> weightsPerLayer;
 
-    private Layer next_layer;
+    private Vector<Double[][]> biasPerLayer;
 
-    private Layer prev_layer;
+    private Double[][] bias;
+
+    private Integer[] architecture;
+
+    private LayerType layerType;
     
-    public Layer(Integer num_neurons) {
-        this.NUM_NEURONS = num_neurons;
-        this.next_layer = null;
-        this.prev_layer = null;
+    public Layer(LayerType layerType, Integer[] architecture) {
+        this.architecture = architecture;
+        this.layerType = layerType;
     }
 
-    public Neuron[] getNeurons() {
-        return neurons;
+    public void buildLayer(){
+        switch(this.layerType){
+            case INPUT:
+            {
+                this.neurons = new Double[1][this.architecture[0]];
+                initNeurons();
+                break;
+            }
+            case HIDDEN:
+            {
+                this.weightsPerLayer = new Vector<>(this.architecture.length-2);
+                initWheights();
+                this.biasPerLayer = new Vector<>(this.architecture.length-2);
+                break;
+            }
+            case OUTPUT:
+            {
+                this.weightsPerLayer = new Vector<>(1);
+                this.biasPerLayer = new Vector<>(this.architecture[this.architecture.length-1]);
+                break;
+            }
+            default:
+                break;
+        }
     }
 
-    public void setNeurons(Neuron[] neurons) {
-        this.neurons = neurons;
+    public void initNeurons(){
+        
     }
 
-    public Double[] getWeights() {
-        return weights;
-    }
+    public void initWheights(){}
+    public void initBias(){}
+    public void initSums(){}
 
-    public void setWeights(Double[] weights) {
-        this.weights = weights;
-    }
-
-    public Integer getNUM_NEURONS() {
-        return NUM_NEURONS;
-    }
-
-    public void setNUM_NEURONS(Integer nUM_NEURONS) {
-        NUM_NEURONS = nUM_NEURONS;
-    }
-
-    public Layer getNext_layer() {
-        return next_layer;
-    }
-
-    public void setNext_layer(Layer next_layer) {
-        this.next_layer = next_layer;
-    }
-
-    public Layer getPrev_layer() {
-        return prev_layer;
-    }
-
-    public void setPrev_layer(Layer prev_layer) {
-        this.prev_layer = prev_layer;
-    }
-    
 }
