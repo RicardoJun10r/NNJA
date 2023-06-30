@@ -84,20 +84,26 @@ public class ModelTreis {
 
         }
 
-        for(int i = 0; i < 2; i++){
-            for(int j = 0; j < 2; j++){
+        for(int i = 0; i < 4; i++){
 
-                double y0 = (xor[i][0]*w[0] + xor[j][0]*w[1]) + b[0];
+            double y00 = (xor[i][0]*w[0] + xor[i][1]*w[1]) + b[0];
+            
+            double y01 = (xor[i][0]*w[2] + xor[i][1]*w[3]) + b[1];
+            
+            double a00 = sigmoidf(y00);
 
-                double a0 = sigmoidf(y0);
+            res00[i] = a00;
 
-                double y1 = (a0*w[2]) + b[1];
+            double a01 = sigmoidf(y01);
 
-                double a1 = sigmoidf(y1);
+            res01[i] = a01;
 
-                System.out.println(xor[i][0] + " | " + xor[j][0] + " = " + a1);
+            double y1 = (a00*w[4] + a01*w[5]) + b[2];
 
-            }
+            double a1 = sigmoidf(y1);
+
+            System.out.println(xor[i][0] + " | " + xor[i][1] + " = " + a1);
+
         }
 
         System.out.println("Erro da rede = " + (erro/SIZE));
@@ -113,6 +119,10 @@ public class ModelTreis {
         return 1/(1+Math.exp(-x));
     }
 
+    static double dasigmoidf(double x){
+        return sigmoidf(x)*(1-sigmoidf(x));
+    }
+
     static double[] backpropagation(double[]res00, double[]res01, double[]res1, double[][]xor, double[]w, double []b, double lr){
 
         final int SIZE = xor.length;
@@ -122,6 +132,30 @@ public class ModelTreis {
         double dw0 = 0.0, dw1 = 0.0, dw2 = 0.0, dw3 = 0.0, dw4 = 0.0, dw5 = 0.0, db0 = 0.0, db1 = 0.0, db2 = 0.0;
 
         for(int i = 0; i < SIZE; i++){
+
+            double di2 = 2*(res1[i] - xor[i][2])*dasigmoidf(res1[i]);
+
+            dw5 += di2*res00[i];
+
+            dw4 += di2*res01[i];
+
+            db2 += di2;
+
+            double di1 = (di2*w[1] + di2*w[3])*dasigmoidf(res01[i]);
+
+            dw1 += di1*xor[i][0];
+
+            dw3 += di1*xor[i][1];
+            
+            db1 += di1;
+            
+            double di0 = (di2*w[0] + di2*w[2])*dasigmoidf(res00[i]);
+
+            dw0 += di0*xor[i][0];
+
+            db2 += di0*xor[i][1];
+
+            db0 += di0;
 
         }
 

@@ -46,11 +46,9 @@ public class Demo {
             b = nw[2];
         }
 
-        for(int i = 0; i < 2; i++){
-            for(int j = 0; j < 2; j++){
-                double y = fsigmoide((treino[j][0]*x[0] + treino[i][0]*x[1]) + b);
-                System.out.println(treino[j][0] + " | " + treino[i][0] + " = " + y);
-            }
+        for(int i = 0; i < 4; i++){
+            double y = fsigmoide((treino[i][0]*x[0] + treino[i][1]*x[1]) + b);
+            System.out.println(treino[i][0] + " | " + treino[i][1] + " = " + y);
         }
 
         System.out.println("Erro = " + (erro/4));
